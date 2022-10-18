@@ -16,8 +16,10 @@
                 <span>
                     <a href="{% url 'index' %}">Active Listings</a>
                     <a href="{% url 'categories' %}">Categories</a>
-                    <a href="{% url 'watchlist' %}">Watchlist</a>
-                    <a href="{% url 'createlisting' %}">Create Listing</a>
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'watchlist' %}">Watchlist</a>
+                        <a href="{% url 'createlisting' %}">Create Listing</a>
+                    {% endif %}
                 </span>
                 <span>
                     {% if user.is_authenticated %}

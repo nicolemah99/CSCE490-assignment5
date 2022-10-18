@@ -1,10 +1,15 @@
+import django
+from django import forms
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.urls import reverse
+from django import forms
 
-from .models import User
+from auctions.models import User, Listing
+
+from auctions.forms import NewListing
 
 
 def index(request):
@@ -65,8 +70,14 @@ def register(request):
 def categories(request):
     return render(request,"auctions/categories.html")
 
+
 def createlisting(request):
-    return render(request,"auctions/createlisting.html")
+    if request.POST:
+        form = NewListing(request.POST)
+        if form.is_valid():
+            form.save()
+        return redirect("index")
+    return render(request,"auctions/createlisting.html", {"form": NewListing})
 
 def watchlist(request):
     return render(request,"auctions/watchlist.html")
