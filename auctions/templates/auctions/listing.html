@@ -1,0 +1,28 @@
+{% extends "auctions/layout.html" %}
+
+{% block main %}
+<article>
+    <section>
+        <h2>{{ name }}</h2>
+    </section>
+<section>
+    IMAGE
+</section>
+
+<section>
+    <p>{{ description }}</p>
+    <h3>${{ price }}</h3>
+    BID SECTION
+</section>
+
+<section>
+    <h3>Details</h3>
+    <ul>
+        <li>Listed by: {{ postedBy }}</li>
+        <li>Category: {{ category }}</li>
+    </ul>
+</section>
+
+</article>
+
+{% endblock %}

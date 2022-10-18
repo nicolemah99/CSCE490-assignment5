@@ -24,6 +24,7 @@ class Listing(models.Model):
     price = models.DecimalField(max_digits=19, decimal_places=2)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, default= 1, on_delete=models.CASCADE)
     category = models.ForeignKey(Category, default = "", on_delete = models.CASCADE)
+    description = models.TextField(max_length= 200,default = "")
 
     def __str__(self):
         return f"{self.name} posted for {self.price}"

@@ -1,3 +1,4 @@
+from unicodedata import category
 import django
 from django import forms
 from django.contrib.auth import authenticate, login, logout
@@ -82,3 +83,16 @@ def createlisting(request):
 
 def watchlist(request):
     return render(request,"auctions/watchlist.html")
+
+from django.http import Http404
+
+def listing(request,listingID):
+    item = Listing.objects.get(id=listingID)
+    name = item.name
+    price = item.price
+    postedBy = item.user
+    description = item.description
+    category = item.category
+
+
+    return render(request, "auctions/listing.html",{"name": name, "price": price, "postedBy": postedBy, "description": description, "category": category})

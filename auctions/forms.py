@@ -6,10 +6,11 @@ from .models import Listing
 
 class NewListing(ModelForm):
     name = forms.TextInput()
+    description = forms.TextInput()
     price = forms.TextInput()
-    user = forms.TextInput()
     category = forms.TextInput()
+    user = forms.TextInput()
 
     class Meta:
         model = Listing
-        fields = ['name', 'price', 'user', 'category']
+        fields = ['name', 'price', 'category', 'description', 'user']
