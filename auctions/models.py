@@ -9,6 +9,7 @@ from django.db import models
 from django.utils import timezone
 from django.forms import ModelForm, SelectDateWidget, TextInput
 from django.conf import settings
+from datetime import date
 
 class Category(models.Model):
     name = models.CharField(max_length = 64)
@@ -25,6 +26,8 @@ class Listing(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, default= 1, on_delete=models.CASCADE)
     category = models.ForeignKey(Category, default = "", on_delete = models.CASCADE)
     description = models.TextField(max_length= 200,default = "")
+    datePosted = models.DateField(default=date.today)
+    dateBidEnd = models.DateField(default=date.today)
 
     def __str__(self):
         return f"{self.name} posted for {self.price}"
