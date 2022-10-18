@@ -11,8 +11,9 @@ class NewListing(ModelForm):
     category = forms.TextInput()
     user = forms.TextInput()
     dateBidEnd = forms.DateField(widget=forms.SelectDateWidget())
+    image = forms.ImageField()
 
 
     class Meta:
         model = Listing
-        fields = ['name', 'price', 'category', 'description', 'dateBidEnd']
+        fields = ['name', 'price', 'category', 'description', 'dateBidEnd', 'image']

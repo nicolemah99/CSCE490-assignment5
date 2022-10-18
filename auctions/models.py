@@ -20,6 +20,7 @@ class Category(models.Model):
 class User(AbstractUser):
     pass
 
+
 class Listing(models.Model):
     name = models.CharField(max_length= 64)
     price = models.DecimalField(max_digits=19, decimal_places=2)
@@ -28,6 +29,7 @@ class Listing(models.Model):
     description = models.TextField(max_length= 200,default = "")
     datePosted = models.DateField(default=date.today)
     dateBidEnd = models.DateField(default=date.today)
+    image = models.ImageField(upload_to= "djangouploads/files/covers", default='images')
 
     def __str__(self):
         return f"{self.name} posted for {self.price}"

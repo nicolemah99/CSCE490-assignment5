@@ -75,7 +75,7 @@ def categories(request):
 
 def createlisting(request):
     if request.POST:
-        form = NewListing(request.POST)
+        form = NewListing(request.POST, request.FILES)
         if form.is_valid():
             form.save()
         return redirect("index")
