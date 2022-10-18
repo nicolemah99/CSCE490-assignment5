@@ -93,6 +93,7 @@ def listing(request,listingID):
     postedBy = item.user
     description = item.description
     category = item.category
+    image = item.image
 
 
-    return render(request, "auctions/listing.html",{"name": name, "price": price, "postedBy": postedBy, "description": description, "category": category})
+    return render(request, "auctions/listing.html",{"name": name, "price": price, "postedBy": postedBy, "description": description, "category": category, 'image': image})
