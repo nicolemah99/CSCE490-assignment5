@@ -4,10 +4,14 @@
 <h2>Active Listings</h2>
 
 <article>
-    <section>Listing 1</section>
 
-    <section>Listing 2</section>
+    {% for l in listings%}
+    <section>
+        <h3>{{ l.name }}</h3>
+        <h4>Price: ${{ l.price }}</h4>
+        <p>Created: PUT CREATED DATE HERE</p>
+    </section>
+    {% endfor %}
 
-    <section>Listing 3</section>
 </article>
 {% endblock %}
