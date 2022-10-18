@@ -6,13 +6,17 @@
 <article>
 
     {% for l in listings%}
-    <a href="{% url 'listing' l.id %}">
-        <section>
+    <section>
+
+    <a href="{% url 'listing' l.id %}" style="text-decoration: none;">
+            {% if l.image %}
+                <img src="{{ l.image.url }}" alt="{{ l.name }}">
+            {% endif %}
             <h3>{{ l.name }}</h3>
             <h4>Price: ${{ l.price }}</h4>
-            <p>Created: PUT CREATED DATE HERE</p>
-        </section>
+            <p>Posted: {{ l.datePosted }}</p>
     </a>
+    </section>
     {% endfor %}
 
 </article>

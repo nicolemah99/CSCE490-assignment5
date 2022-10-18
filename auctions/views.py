@@ -1,3 +1,4 @@
+from operator import itemgetter
 from unicodedata import category
 import django
 from django import forms
@@ -88,12 +89,5 @@ from django.http import Http404
 
 def listing(request,listingID):
     item = Listing.objects.get(id=listingID)
-    name = item.name
-    price = item.price
-    postedBy = item.user
-    description = item.description
-    category = item.category
-    image = item.image
 
-
-    return render(request, "auctions/listing.html",{"name": name, "price": price, "postedBy": postedBy, "description": description, "category": category, 'image': image})
+    return render(request, "auctions/listing.html",{"item":item})
