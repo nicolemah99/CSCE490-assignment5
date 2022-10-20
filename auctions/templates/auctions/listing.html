@@ -39,21 +39,22 @@
     </section>
 
     <section>
-        <ul>
+        <h4>Comments</h4>
             {% for c in allComments %}
-            <li> {{ c.comment }} by {{ c.user }} on {{ c.date }}</li>
+            <div> {{ c.comment }} by {{ c.user }} on {{ c.date }}</div><br>
             {% endfor %}
 
-        </ul>
+
+        <form method="POST" action="{% url 'comment' item.id %}" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type='hidden' name='listing_id' value='{{ item.id }}' />
+            {{ commentForm }}
+            <button>Comment</button>
+        </form>
 
     </section>
 
-    <form method="POST" action="{% url 'comment' item.id %}" enctype="multipart/form-data">
-        {% csrf_token %}
-        <input type='hidden' name='listing_id' value='{{ item.id }}' />
-        {{ commentForm }}
-        <button>Comment</button>
-    </form>
+
 
 </article>
 
