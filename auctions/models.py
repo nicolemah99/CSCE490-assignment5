@@ -20,8 +20,6 @@ class Category(models.Model):
     def __str__(self):
         return f"{self.name}"
 
-class User(AbstractUser):
-    pass
 
 
 class Listing(models.Model):
@@ -36,6 +34,9 @@ class Listing(models.Model):
 
     def __str__(self):
         return f"{self.name}"
+
+class User(AbstractUser):
+    pass
 
 class Comment(models.Model):
     comment = models.TextField(max_length = 200)
