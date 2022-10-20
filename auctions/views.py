@@ -112,6 +112,8 @@ def bid(request, listingID):
         if bidSubmitted <= currentbid:
             messages.error(request, "Bid must be more than current bid.")
         else:
+            item.currentBid = bidSubmitted
+            item.save()
             form = NewBid(request.POST)
             if form.is_valid():
                 form.save()
