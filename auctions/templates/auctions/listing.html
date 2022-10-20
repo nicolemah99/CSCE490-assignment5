@@ -5,45 +5,55 @@
     <section>
         <h2>{{ item.name }}</h2>
     </section>
-<section>
-    <img src="{{ item.image.url }}">
-</section>
+    <section>
+        <img src="{{ item.image.url }}">
+    </section>
 
-<section>
-    <h3>${{ item.currentBid }}</h3>
-    <h4>Bidding ends: {{ item.dateBidEnd }} </h4>
-    {% if messages %}
-    <ul class="messages">
-        {% for message in messages %}
-        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-        {% endfor %}
-    </ul>
-    {% endif %}
-    
+    <section>
+        <h3>${{ item.currentBid }}</h3>
+        <h4>Bidding ends: {{ item.dateBidEnd }} </h4>
+        {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+                {% endfor %}
+        </ul>
+        {% endif %}
 
-    <form method="POST" action="{% url 'bid' item.id %}" enctype="multipart/form-data">
+
+        <form method="POST" action="{% url 'bid' item.id %}" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ bidForm }}
+            <button>Bid</button>
+        </form>
+
+        <h5>Description: {{ item.description }}</h5>
+    </section>
+
+    <section>
+        <h4>Details</h4>
+        <ul>
+            <li>Listed by: {{ item.user }}</li>
+            <li>Category: {{ item.category }}</li>
+        </ul>
+    </section>
+
+    <section>
+        <ul>
+            {% for c in allComments %}
+            <li> {{ c.comment }} by {{ c.user }} on {{ c.date }}</li>
+            {% endfor %}
+
+        </ul>
+
+    </section>
+
+    <form method="POST" action="{% url 'comment' item.id %}" enctype="multipart/form-data">
         {% csrf_token %}
-        {{ bidForm }}
-        <button>Bid</button>
+        <input type='hidden' name='listing_id' value='{{ item.id }}' />
+        {{ commentForm }}
+        <button>Comment</button>
     </form>
-
-    <h5>Description: {{ item.description }}</h5>
-</section>
-
-<section>
-    <h4>Details</h4>
-    <ul>
-        <li>Listed by: {{ item.user }}</li>
-        <li>Category: {{ item.category }}</li>
-    </ul>
-</section>
-
-<form method="POST" action="{% url 'comment' item.id %}" enctype="multipart/form-data">
-    {% csrf_token %}
-    <input type='hidden' name='listing_id' value='{{ item.id }}' />
-    {{ commentForm }}
-    <button>Comment</button>
-</form>
 
 </article>
 

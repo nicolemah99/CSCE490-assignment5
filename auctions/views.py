@@ -11,7 +11,7 @@ from django.urls import reverse
 from django import forms
 from django.contrib import messages
 
-from auctions.models import User, Listing
+from auctions.models import *
 
 from auctions.forms import NewBid, NewComment, NewListing
 
@@ -91,8 +91,9 @@ from django.http import Http404
 
 def listing(request,listingID):
     item = Listing.objects.get(id=listingID)
+    allComments = Comment.objects.filter(listing = listingID)
 
-    return render(request, "auctions/listing.html",{"item":item, "commentForm": NewComment, 'bidForm': NewBid})
+    return render(request, "auctions/listing.html",{"item":item, "commentForm": NewComment, 'bidForm': NewBid, 'allComments': allComments})
 
 def comment(request, listingID):
 
@@ -116,6 +117,7 @@ def bid(request, listingID):
             item.save()
             form = NewBid(request.POST)
             if form.is_valid():
+                messages.success(request, "Bid Successful, you are currently winning this bid.")
                 form.save()
 
     return redirect('listing', listingID = listingID)
