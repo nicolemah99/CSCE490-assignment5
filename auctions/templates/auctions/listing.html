@@ -10,9 +10,24 @@
 </section>
 
 <section>
-    <h3>${{ item.price }}</h3>
+    <h3>${{ item.currentBid }}</h3>
+    <h4>Bidding ends: {{ item.dateBidEnd }} </h4>
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    
+
+    <form method="POST" action="{% url 'bid' item.id %}" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ bidForm }}
+        <button>Bid</button>
+    </form>
+
     <h5>Description: {{ item.description }}</h5>
-    BID SECTION
 </section>
 
 <section>
@@ -22,6 +37,13 @@
         <li>Category: {{ item.category }}</li>
     </ul>
 </section>
+
+<form method="POST" action="{% url 'comment' item.id %}" enctype="multipart/form-data">
+    {% csrf_token %}
+    <input type='hidden' name='listing_id' value='{{ item.id }}' />
+    {{ commentForm }}
+    <button>Comment</button>
+</form>
 
 </article>
 

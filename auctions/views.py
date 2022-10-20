@@ -1,3 +1,4 @@
+import decimal
 from operator import itemgetter
 from unicodedata import category
 import django
@@ -8,10 +9,11 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import redirect, render
 from django.urls import reverse
 from django import forms
+from django.contrib import messages
 
 from auctions.models import User, Listing
 
-from auctions.forms import NewListing
+from auctions.forms import NewBid, NewComment, NewListing
 
 
 def index(request):
@@ -90,4 +92,28 @@ from django.http import Http404
 def listing(request,listingID):
     item = Listing.objects.get(id=listingID)
 
-    return render(request, "auctions/listing.html",{"item":item})
+    return render(request, "auctions/listing.html",{"item":item, "commentForm": NewComment, 'bidForm': NewBid})
+
+def comment(request, listingID):
+
+    if request.method == "POST":
+        form = NewComment(request.POST)
+        if form.is_valid():
+            form.save()
+    
+        return redirect('listing', listingID = listingID)
+
+def bid(request, listingID):
+    item = Listing.objects.get(id=listingID)
+    currentbid = item.currentBid
+    bidSubmitted = float(request.POST['bidPrice'])
+
+    if request.method == "POST":
+        if bidSubmitted <= currentbid:
+            messages.error(request, "Bid must be more than current bid.")
+        else:
+            form = NewBid(request.POST)
+            if form.is_valid():
+                form.save()
+
+    return redirect('listing', listingID = listingID)
