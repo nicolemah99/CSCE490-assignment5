@@ -31,7 +31,7 @@ class Listing(models.Model):
     description = models.TextField(max_length= 200,default = "")
     datePosted = models.DateField(default=date.today)
     dateBidEnd = models.DateField(default=date.today)
-    image = models.ImageField(upload_to= 'auction/images', default='')
+    image = models.ImageField(upload_to= 'auctions/images', default='auctions/images/noimage.jpeg')
     
     def __str__(self):
         return f"{self.name}"
