@@ -4,8 +4,8 @@
 <h2>Categories</h2>
 
 <article>
-    {% for c in Categories %}
-    <p> {{ c }} </p>
+    {% for c in allCategories %}
+    <a href="{% url 'bycategory' c.name %}">{{ c }}</a>
     {% endfor %}
 </article>
 
