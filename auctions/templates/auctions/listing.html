@@ -14,10 +14,18 @@
         {% endif %}
 
         {% if user.is_authenticated %}
+        {% if inWatchlist %}
+        <form method="POST" action="{% url 'removefromwatchlist' item.id %}">
+            {% csrf_token %}
+            <button>Remove from watchlist</button>
+        </form>
+        {% else %}
         <form method="POST" action="{% url 'addtowatchlist' item.id %}">
             {% csrf_token %}
             <button>Add to watchlist</button>
         </form>
+
+        {% endif %}
         {% endif %}
     </section>
     <section>

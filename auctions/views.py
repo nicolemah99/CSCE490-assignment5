@@ -110,12 +110,22 @@ def addtowatchlist(request,listingID):
             messages.success(request, f"{item.name} successfully added to watchlist")
     return redirect("listing", listingID = listingID)
 
+def removefromwatchlist(request,listingID):
+    if request.method == "POST":
+        item = Listing.objects.get(id=listingID)
+        user = request.user
+        Watchlist.objects.filter(user=user, listing = item).delete()
+        messages.success(request, f"{item.name} deleted")
+        watchlist = Watchlist.objects.filter(user=request.user)
+    return render(request,"auctions/watchlist.html", {"watchlist": watchlist})
+
 
 def listing(request,listingID):
     item = Listing.objects.get(id=listingID)
     allComments = Comment.objects.filter(listing = listingID)
+    inWatchlist = Watchlist.objects.filter(user=request.user, listing= item).exists()
 
-    return render(request, "auctions/listing.html",{"item":item, "commentForm": NewComment, 'bidForm': NewBid, 'allComments': allComments})
+    return render(request, "auctions/listing.html",{"item":item, "commentForm": NewComment, 'bidForm': NewBid, 'allComments': allComments, "inWatchlist": inWatchlist})
 
 def comment(request, listingID):
 

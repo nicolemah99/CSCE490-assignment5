@@ -13,7 +13,16 @@
             <h3>{{ l.listing.name }}</h3>
             <h4>Current Bid: ${{ l.listing.currentBid }}</h4>
             <p>Posted: {{ l.listing.datePosted }}</p>
+            {% if user.is_authenticated %}
+            <form method="POST" action="{% url 'removefromwatchlist' item.id %}">
+                {% csrf_token %}
+                <button>Remove from watchlist</button>
+            </form>
+            {% endif %}
         </a>
+        {% empty %}
+        <h3>No listings on your Watchlist</h3>
+        <a href="{% url 'index' %}">Find listings to add</a>
     </section>
     {% endfor %}
 
