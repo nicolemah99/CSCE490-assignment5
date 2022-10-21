@@ -10,10 +10,9 @@ from django.shortcuts import redirect, render
 from django.urls import reverse
 from django import forms
 from django.contrib import messages
-
+from django.http import Http404
 from auctions.models import *
-
-from auctions.forms import NewBid, NewComment, NewListing
+from auctions.forms import *
 
 
 def index(request):
@@ -74,9 +73,6 @@ def register(request):
 
 def categories(request):
     allCategories = Category.objects.all()
-
-
-
     return render(request,"auctions/categories.html", {"allCategories": allCategories})
 
 def bycategory(request,categoryChosen):
@@ -96,21 +92,24 @@ def createlisting(request):
         return redirect("index")
     return render(request,"auctions/createlisting.html", {"form": NewListing})
 
-def watchlist(request):
 
-    return render(request,"auctions/watchlist.html")
+def watchlist(request):
+    watchlist = Watchlist.objects.filter(user=request.user)
+    return render(request,"auctions/watchlist.html", {"watchlist": watchlist})
+
 
 def addtowatchlist(request,listingID):
-
     if request.method == "POST":
         item = Listing.objects.get(id=listingID)
         user = request.user
-        watchItem = Watchlist(user=user, listing = item)
-        watchItem.save()
-        messages.success(request, f"{item.name} successfully added to watchlist")
+        if Watchlist.objects.filter(user=user, listing = item).exists():
+            messages.error(request, f"{item.name} already in watchlist")
+        else:
+            watchItem = Watchlist(user=user, listing = item)
+            watchItem.save()
+            messages.success(request, f"{item.name} successfully added to watchlist")
     return redirect("listing", listingID = listingID)
 
-from django.http import Http404
 
 def listing(request,listingID):
     item = Listing.objects.get(id=listingID)

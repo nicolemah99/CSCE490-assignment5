@@ -1,9 +1,22 @@
 {% extends "auctions/layout.html" %}
 
 {% block main %}
-<h2>Watchlist</h2>
+<h2>Your Watchlist</h2>
 
 <article>
+    {% for l in watchlist%}
+    <section>
+
+    <a href="{% url 'listing' l.id %}" style="text-decoration: none;">
+            {% if l.image %}
+                <img src="{{ l.image.url }}" alt="{{ l.name }}">
+            {% endif %}
+            <h3>{{ l.name }}</h3>
+            <h4>Current Bid: ${{ l.currentBid }}</h4>
+            <p>Posted: {{ l.datePosted }}</p>
+    </a>
+    </section>
+    {% endfor %}
 
 </article>
 {% endblock %}
