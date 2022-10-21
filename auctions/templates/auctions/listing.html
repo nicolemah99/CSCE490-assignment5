@@ -4,6 +4,7 @@
 <article>
     <section>
         <h2>{{ item.name }}</h2>
+        <a href="{% url 'index' %}">Back to all listings</a>
 
         {% if messages %}
         <ul class="messages">

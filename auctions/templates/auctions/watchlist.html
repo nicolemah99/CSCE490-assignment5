@@ -14,7 +14,7 @@
             <h4>Current Bid: ${{ l.listing.currentBid }}</h4>
             <p>Posted: {{ l.listing.datePosted }}</p>
             {% if user.is_authenticated %}
-            <form method="POST" action="{% url 'removefromwatchlist' item.id %}">
+            <form method="POST" action="{% url 'removefromwatchlist' l.listing.id %}">
                 {% csrf_token %}
                 <button>Remove from watchlist</button>
             </form>
