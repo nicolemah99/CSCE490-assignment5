@@ -73,14 +73,20 @@ def register(request):
         return render(request, "auctions/register.html")
 
 def categories(request):
-    return render(request,"auctions/categories.html")
+    allCategories = Category.objects.all()
+
+
+
+    return render(request,"auctions/categories.html", {"allCategories": allCategories})
 
 
 def createlisting(request):
     if request.POST:
         form = NewListing(request.POST, request.FILES)
         if form.is_valid():
-            form.save()
+            obj = form.save(commit=False)
+            obj.user = request.user
+            obj.save()
         return redirect("index")
     return render(request,"auctions/createlisting.html", {"form": NewListing})
 
@@ -100,8 +106,10 @@ def comment(request, listingID):
     if request.method == "POST":
         form = NewComment(request.POST)
         if form.is_valid():
-            form.save()
-    
+            obj = form.save(commit=False)
+            obj.user = request.user
+            obj.listing = Listing.objects.get(id=listingID)
+            obj.save()
         return redirect('listing', listingID = listingID)
 
 def bid(request, listingID):
@@ -118,6 +126,9 @@ def bid(request, listingID):
             form = NewBid(request.POST)
             if form.is_valid():
                 messages.success(request, "Bid Successful, you are currently winning this bid.")
-                form.save()
+                obj = form.save(commit=False)
+                obj.user = request.user
+                obj.listing = Listing.objects.get(id=listingID)
+                obj.save()
 
     return redirect('listing', listingID = listingID)

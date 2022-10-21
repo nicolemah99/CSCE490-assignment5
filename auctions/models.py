@@ -3,6 +3,7 @@ from email.policy import default
 from pyexpat import model
 from unicodedata import category
 from unittest.util import _MAX_LENGTH
+from urllib import request
 from xmlrpc.client import DateTime
 from django.contrib.auth.models import AbstractUser
 from django.db import models
@@ -25,13 +26,13 @@ class Category(models.Model):
 class Listing(models.Model):
     name = models.CharField(max_length= 64)
     currentBid = models.DecimalField(max_digits=19, decimal_places=2)
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, default= 1, on_delete=models.SET_DEFAULT)
-    category = models.ForeignKey(Category, default = "", on_delete = models.SET_DEFAULT)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, default=1 , on_delete=models.CASCADE)
+    category = models.ForeignKey(Category, default = "", on_delete = models.CASCADE)
     description = models.TextField(max_length= 200,default = "")
     datePosted = models.DateField(default=date.today)
     dateBidEnd = models.DateField(default=date.today)
-    image = models.ImageField(upload_to= 'images', default='images')
-
+    image = models.ImageField(upload_to= 'auction/images', default='')
+    
     def __str__(self):
         return f"{self.name}"
 
