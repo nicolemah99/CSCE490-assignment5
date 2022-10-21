@@ -6,15 +6,14 @@
 <article>
     {% for l in watchlist%}
     <section>
-
-    <a href="{% url 'listing' l.id %}" style="text-decoration: none;">
+        <a href="{% url 'listing' l.listing.id %}" style="text-decoration: none;">
             {% if l.image %}
-                <img src="{{ l.image.url }}" alt="{{ l.name }}">
+                <img src="{{ l.listing.image.url }}" alt="{{ l.listing.name }}">
             {% endif %}
-            <h3>{{ l.name }}</h3>
-            <h4>Current Bid: ${{ l.currentBid }}</h4>
-            <p>Posted: {{ l.datePosted }}</p>
-    </a>
+            <h3>{{ l.listing.name }}</h3>
+            <h4>Current Bid: ${{ l.listing.currentBid }}</h4>
+            <p>Posted: {{ l.listing.datePosted }}</p>
+        </a>
     </section>
     {% endfor %}
 
