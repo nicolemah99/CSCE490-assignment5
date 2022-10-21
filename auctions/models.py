@@ -39,6 +39,13 @@ class Listing(models.Model):
 class User(AbstractUser):
     pass
 
+
+class Watchlist(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, default=1, on_delete=models.CASCADE)
+    listing = models.ForeignKey(Listing, default = "", on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f'{self.user} added {self.listing} to watchlist.'
 class Comment(models.Model):
     comment = models.TextField(max_length = 200)
     date = models.DateTimeField(auto_now=True)

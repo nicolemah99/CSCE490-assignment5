@@ -97,7 +97,18 @@ def createlisting(request):
     return render(request,"auctions/createlisting.html", {"form": NewListing})
 
 def watchlist(request):
+
     return render(request,"auctions/watchlist.html")
+
+def addtowatchlist(request,listingID):
+
+    if request.method == "POST":
+        item = Listing.objects.get(id=listingID)
+        user = request.user
+        watchItem = Watchlist(user=user, listing = item)
+        watchItem.save()
+        messages.success(request, f"{item.name} successfully added to watchlist")
+    return redirect("listing", listingID = listingID)
 
 from django.http import Http404
 

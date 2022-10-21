@@ -4,6 +4,21 @@
 <article>
     <section>
         <h2>{{ item.name }}</h2>
+
+        {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+                {% endfor %}
+        </ul>
+        {% endif %}
+
+        {% if user.is_authenticated %}
+        <form method="POST" action="{% url 'addtowatchlist' item.id %}">
+            {% csrf_token %}
+            <button>Add to watchlist</button>
+        </form>
+        {% endif %}
     </section>
     <section>
         <img src="{{ item.image.url }}">

@@ -14,6 +14,9 @@
         <h4>Current Bid: ${{ l.currentBid }}</h4>
         <p>Posted: {{ l.datePosted }}</p>
     </a>
+
+    {% empty %}
+    <h3>No active listings in this category.</h3>
     {% endfor %}
 </article>
 {% endblock %}
