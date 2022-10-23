@@ -1,16 +1,17 @@
 {% extends "auctions/layout.html" %}
 
 {% block main %}
+<a href="{% url 'index' %}">Back to all listings</a><br>
 <article>
     <section>
         {% if owner %}
+            <h4>You own this item.</h4>
             <form method="POST" action="{% url 'closeBidding' item.id %}">
                 {% csrf_token %}
                 <button>Close Bidding</button>
             </form>
         {% endif %}
         <h2>{{ item.name }}</h2>
-        <a href="{% url 'index' %}">Back to all listings</a>
 
         {% if messages %}
         <ul class="messages">
@@ -42,13 +43,6 @@
     <section>
         <h3>${{ item.currentBid }}</h3>
         <h4>Bidding ends: {{ item.dateBidEnd }} </h4>
-        {% if messages %}
-        <ul class="messages">
-            {% for message in messages %}
-            <li{% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
-                {% endfor %}
-        </ul>
-        {% endif %}
 
         {% if user.is_authenticated %}
         <form method="POST" action="{% url 'bid' item.id %}" enctype="multipart/form-data">

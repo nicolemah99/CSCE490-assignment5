@@ -1,6 +1,7 @@
 from datetime import datetime
 from email.policy import default
 from pyexpat import model
+from tabnanny import verbose
 from tkinter import Widget
 from unicodedata import category
 from unittest.util import _MAX_LENGTH
@@ -13,8 +14,7 @@ from django.forms import ModelForm, SelectDateWidget, TextInput, ValidationError
 from django.conf import settings
 from datetime import date
 from django import forms
-
-from auctions import validators
+from pkg_resources import require
 
 class User(AbstractUser):
     pass
@@ -32,16 +32,16 @@ class Category(models.Model):
 
 class Listing(models.Model):
     name = models.CharField(max_length= 64)
-    currentBid = models.DecimalField(max_digits=19, decimal_places=2)
-    finalBid = models.DecimalField(max_digits=19, decimal_places=2, null = True)
+    currentBid = models.DecimalField(max_digits=19, decimal_places=2, verbose_name = "Starting Bid")
+    finalBid = models.DecimalField(max_digits=19, decimal_places=2, null = True, blank = True,verbose_name = "Sold for")
     user = models.ForeignKey(settings.AUTH_USER_MODEL, default=1 , on_delete=models.CASCADE)
     category = models.ForeignKey(Category, null= True, on_delete = models.CASCADE)
     description = models.TextField(max_length= 200,null= True)
-    datePosted = models.DateField(default=date.today)
-    dateBidEnd = models.DateField(default=date.today)
-    image = models.ImageField(upload_to= 'auctions/images', default='auctions/images/noimage.jpeg')
+    datePosted = models.DateField(default=date.today, verbose_name = "Date Posted")
+    dateBidEnd = models.DateField(default=date.today, verbose_name = "End Date")
+    image = models.ImageField(upload_to= 'auctions/images', default='auctions/images/noimage.jpeg',blank = True, verbose_name = "Images")
     active = models.BooleanField(default=1)
-    winner = models.ForeignKey(User, null=True , on_delete=models.CASCADE, related_name = "winner")
+    winner = models.ForeignKey(User, null=True , on_delete=models.CASCADE, related_name = "winner", blank = True, verbose_name = "Sold to")
     
     def __str__(self):
         return f"{self.name}"
@@ -64,7 +64,7 @@ class Comment(models.Model):
         return f'{self.user} commented on {self.listing}'
 
 class Bid(models.Model):
-    bidPrice = models.DecimalField(max_digits=19, decimal_places=2)
+    bidPrice = models.DecimalField(max_digits=19, decimal_places=2, verbose_name = "Bid Amount")
     user = models.ForeignKey(settings.AUTH_USER_MODEL, default= 1, on_delete=models.CASCADE)
     listing = models.ForeignKey(Listing, default = "", on_delete=models.CASCADE)
     date = models.DateTimeField(auto_now= True)
