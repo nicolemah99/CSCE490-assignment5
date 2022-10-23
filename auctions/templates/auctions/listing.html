@@ -67,7 +67,7 @@
     <section>
         <h4>Comments</h4>
             {% for c in allComments %}
-            <div> {{ c.comment }} by {{ c.user }} on {{ c.date }}</div><br>
+            <article> {{ c.comment }} by {{ c.user }} on {{ c.date }}</article>
             {% endfor %}
 
             {% if user.is_authenticated %}

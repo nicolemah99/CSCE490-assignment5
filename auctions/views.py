@@ -17,6 +17,7 @@ from auctions.forms import *
 
 def index(request):
     listings = Listing.objects.all()
+    
     return render(request, "auctions/index.html", {'listings': listings})
 
 
