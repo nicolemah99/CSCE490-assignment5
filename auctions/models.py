@@ -20,6 +20,7 @@ class User(AbstractUser):
     pass
 
 class Category(models.Model):
+    image = models.ImageField(upload_to= 'auctions/images', default='auctions/images/noimage.jpeg',blank = True, verbose_name = "Images")
     name = models.CharField(max_length = 64)
 
     class Meta:

@@ -3,10 +3,15 @@
 {% block main %}
 <h2>Categories</h2>
 
-<article>
+<section>
     {% for c in allCategories %}
-    <a href="{% url 'bycategory' c.name %}">{{ c }}</a>
+    <article style="display:inline-block; margin: 25px; ">
+        <a href="{% url 'bycategory' c.name %}" style="text-decoration:none;display:inline;">
+            <img src="{{ c.image.url }}" alt="{{ c.name }}" style="width: 200px; display: block;margin: auto;">
+            <h3 style = "vertical-align:middle; text-align:center;">{{ c }}</h3>
+        </a>
+    </article>
     {% endfor %}
-</article>
+</section>
 
 {% endblock %}
