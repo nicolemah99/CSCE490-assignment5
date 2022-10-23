@@ -123,7 +123,11 @@ def removefromwatchlist(request,listingID):
 def listing(request,listingID):
     item = Listing.objects.get(id=listingID)
     allComments = Comment.objects.filter(listing = listingID)
-    inWatchlist = Watchlist.objects.filter(user=request.user, listing= item).exists()
+
+    if request.user.is_authenticated:
+        inWatchlist = Watchlist.objects.filter(user=request.user, listing= item).exists()
+    else:
+        inWatchlist = False
 
     return render(request, "auctions/listing.html",{"item":item, "commentForm": NewComment, 'bidForm': NewBid, 'allComments': allComments, "inWatchlist": inWatchlist})
 

@@ -32,6 +32,7 @@ class Listing(models.Model):
     datePosted = models.DateField(default=date.today)
     dateBidEnd = models.DateField(default=date.today)
     image = models.ImageField(upload_to= 'auctions/images', default='auctions/images/noimage.jpeg')
+    active = models.BooleanField(default=1)
     
     def __str__(self):
         return f"{self.name}"
@@ -46,6 +47,7 @@ class Watchlist(models.Model):
 
     def __str__(self):
         return f'{self.user} added {self.listing} to watchlist.'
+
 class Comment(models.Model):
     comment = models.TextField(max_length = 200)
     date = models.DateTimeField(auto_now=True)

@@ -9,9 +9,7 @@
     <section>
 
     <a href="{% url 'listing' l.id %}" style="text-decoration: none;">
-            {% if l.image %}
-                <img src="{{ l.image.url }}" alt="{{ l.name }}">
-            {% endif %}
+            <img src="{{ l.image.url }}" alt="{{ l.name }}">
             <h3>{{ l.name }}</h3>
             <h4>Current Bid: ${{ l.currentBid }}</h4>
             <p>Posted: {{ l.datePosted }}</p>

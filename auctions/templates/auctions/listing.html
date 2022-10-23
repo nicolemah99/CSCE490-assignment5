@@ -44,12 +44,16 @@
         </ul>
         {% endif %}
 
-
+        {% if user.is_authenticated %}
         <form method="POST" action="{% url 'bid' item.id %}" enctype="multipart/form-data">
             {% csrf_token %}
             {{ bidForm }}
             <button>Bid</button>
         </form>
+        {% else %}
+            <a href="{% url 'login' %}">Login</a><p style="display:inline"> to bid on this item</p>
+        {% endif %}
+        
 
         <h4>Description</h4>
         <p>{{ item.description }}</p>
@@ -66,13 +70,16 @@
             <div> {{ c.comment }} by {{ c.user }} on {{ c.date }}</div><br>
             {% endfor %}
 
-
+            {% if user.is_authenticated %}
         <form method="POST" action="{% url 'comment' item.id %}" enctype="multipart/form-data">
             {% csrf_token %}
             <input type='hidden' name='listing_id' value='{{ item.id }}' />
             {{ commentForm }}
             <button>Comment</button>
         </form>
+        {% else %}
+        <a href="{% url 'login' %}">Login</a><p style="display:inline"> to comment on this item</p>
+        {% endif %}
 
     </section>
 
