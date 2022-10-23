@@ -9,11 +9,16 @@
     {% if l.active %}
     <section>
 
-    <a href="{% url 'listing' l.id %}" style="text-decoration: none;">
-            <img src="{{ l.image.url }}" alt="{{ l.name }}">
-            <h3>{{ l.name }}</h3>
-            <h4>Current Bid: ${{ l.currentBid }}</h4>
-            <p>Posted: {{ l.datePosted }}</p>
+    <a href="{% url 'listing' l.id %}" style="text-decoration: none; display: inline-flex;">
+            <img src="{{ l.image.url }}" alt="{{ l.name }}" style="margin-left:100px; margin-right: 100px;">
+            <div>
+                <h3>{{ l.name }}</h3>
+                <h4>Current Bid: ${{ l.currentBid }}</h4>
+                <p>Posted: {{ l.datePosted }}</p>
+
+            </div>
+
+                
     </a>
     </section>
     {% endif %}

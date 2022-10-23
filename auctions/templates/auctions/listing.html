@@ -1,7 +1,7 @@
 {% extends "auctions/layout.html" %}
 
 {% block main %}
-<a href="{% url 'index' %}">Back to all listings</a><br>
+<a href="{% url 'index' %}">Back to all listings</a><br><br>
 <article>
     <section>
         {% if owner %}
@@ -37,7 +37,7 @@
         {% endif %}
     </section>
     <section>
-        <img src="{{ item.image.url }}">
+        <img src="{{ item.image.url }}" style="width:500px">
     </section>
 
     <section>
@@ -66,9 +66,11 @@
 
     <section>
         <h4>Comments</h4>
+        <article>
             {% for c in allComments %}
-            <article> {{ c.comment }} by {{ c.user }} on {{ c.date }}</article>
+            <section> "{{ c.comment }}" <br>by <strong>{{ c.user }}</strong> on {{ c.date }}</section>
             {% endfor %}
+        </article>
 
             {% if user.is_authenticated %}
         <form method="POST" action="{% url 'comment' item.id %}" enctype="multipart/form-data">
