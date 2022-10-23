@@ -1,6 +1,7 @@
 from datetime import datetime
 from email.policy import default
 from pyexpat import model
+from tkinter import Widget
 from unicodedata import category
 from unittest.util import _MAX_LENGTH
 from urllib import request
@@ -8,9 +9,15 @@ from xmlrpc.client import DateTime
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.utils import timezone
-from django.forms import ModelForm, SelectDateWidget, TextInput
+from django.forms import ModelForm, SelectDateWidget, TextInput, ValidationError
 from django.conf import settings
 from datetime import date
+from django import forms
+
+from auctions import validators
+
+class User(AbstractUser):
+    pass
 
 class Category(models.Model):
     name = models.CharField(max_length = 64)
@@ -26,19 +33,18 @@ class Category(models.Model):
 class Listing(models.Model):
     name = models.CharField(max_length= 64)
     currentBid = models.DecimalField(max_digits=19, decimal_places=2)
+    finalBid = models.DecimalField(max_digits=19, decimal_places=2, null = True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, default=1 , on_delete=models.CASCADE)
-    category = models.ForeignKey(Category, default = "", on_delete = models.CASCADE)
-    description = models.TextField(max_length= 200,default = "")
+    category = models.ForeignKey(Category, null= True, on_delete = models.CASCADE)
+    description = models.TextField(max_length= 200,null= True)
     datePosted = models.DateField(default=date.today)
     dateBidEnd = models.DateField(default=date.today)
     image = models.ImageField(upload_to= 'auctions/images', default='auctions/images/noimage.jpeg')
     active = models.BooleanField(default=1)
+    winner = models.ForeignKey(User, null=True , on_delete=models.CASCADE, related_name = "winner")
     
     def __str__(self):
         return f"{self.name}"
-
-class User(AbstractUser):
-    pass
 
 
 class Watchlist(models.Model):

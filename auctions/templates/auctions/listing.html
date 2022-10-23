@@ -3,6 +3,12 @@
 {% block main %}
 <article>
     <section>
+        {% if owner %}
+            <form method="POST" action="{% url 'closeBidding' item.id %}">
+                {% csrf_token %}
+                <button>Close Bidding</button>
+            </form>
+        {% endif %}
         <h2>{{ item.name }}</h2>
         <a href="{% url 'index' %}">Back to all listings</a>
 

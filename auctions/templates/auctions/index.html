@@ -6,6 +6,7 @@
 <article>
 
     {% for l in listings %}
+    {% if l.active %}
     <section>
 
     <a href="{% url 'listing' l.id %}" style="text-decoration: none;">
@@ -15,6 +16,7 @@
             <p>Posted: {{ l.datePosted }}</p>
     </a>
     </section>
+    {% endif %}
     {% endfor %}
 
 </article>

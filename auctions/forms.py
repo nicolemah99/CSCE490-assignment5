@@ -1,7 +1,6 @@
 from typing_extensions import Required
 from django import forms
 from django.forms import ModelForm, SelectDateWidget
-from django import forms
 from .models import *
 
 class NewListing(ModelForm):

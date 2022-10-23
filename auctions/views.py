@@ -16,8 +16,8 @@ from auctions.forms import *
 
 
 def index(request):
+    #Check for active listings here, compare todays date with dateBidEnd 
     listings = Listing.objects.all()
-    
     return render(request, "auctions/index.html", {'listings': listings})
 
 
@@ -124,13 +124,24 @@ def removefromwatchlist(request,listingID):
 def listing(request,listingID):
     item = Listing.objects.get(id=listingID)
     allComments = Comment.objects.filter(listing = listingID)
-
+    owner = False
     if request.user.is_authenticated:
         inWatchlist = Watchlist.objects.filter(user=request.user, listing= item).exists()
+        if item.user == request.user:
+            owner = True
     else:
         inWatchlist = False
 
-    return render(request, "auctions/listing.html",{"item":item, "commentForm": NewComment, 'bidForm': NewBid, 'allComments': allComments, "inWatchlist": inWatchlist})
+    return render(request, "auctions/listing.html",{"item":item, "commentForm": NewComment, 'bidForm': NewBid, 'allComments': allComments, "inWatchlist": inWatchlist, "owner": owner})
+
+def closeBidding(request, listingID):
+    item = Listing.objects.get(id = listingID)
+    item.active = 0
+    item.finalBid = item.currentBid
+    item.save()
+    messages.success(request, "You have successfully closed the bidding.")
+    return redirect('listing', listingID = listingID)
+
 
 def comment(request, listingID):
 
