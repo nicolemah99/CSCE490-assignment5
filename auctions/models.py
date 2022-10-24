@@ -1,16 +1,11 @@
-from datetime import datetime
 from email.policy import default
 from pyexpat import model
 from tabnanny import verbose
 from tkinter import Widget
 from unicodedata import category
 from unittest.util import _MAX_LENGTH
-from urllib import request
-from xmlrpc.client import DateTime
 from django.contrib.auth.models import AbstractUser
 from django.db import models
-from django.utils import timezone
-from django.forms import ModelForm, SelectDateWidget, TextInput, ValidationError
 from django.conf import settings
 from datetime import date
 from django import forms

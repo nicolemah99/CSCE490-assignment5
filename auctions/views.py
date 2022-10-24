@@ -1,3 +1,4 @@
+import datetime
 import decimal
 from operator import itemgetter
 from unicodedata import category
@@ -18,7 +19,16 @@ from auctions.forms import *
 def index(request):
     #Check for active listings here, compare todays date with dateBidEnd 
     listings = Listing.objects.all()
-    return render(request, "auctions/index.html", {'listings': listings})
+    for l in listings:
+        endDate = l.dateBidEnd
+        today = datetime.date.today()
+
+        if endDate < today:
+            Listing.objects.filter(id=l.id).update(active=0)
+    
+    activeListings = Listing.objects.filter(active=1)
+        
+    return render(request, "auctions/index.html", {'activeListings': activeListings})
 
 
 def login_view(request):
@@ -78,7 +88,7 @@ def categories(request):
 
 def bycategory(request,categoryChosen):
     category = Category.objects.get(name=categoryChosen)
-    allListings = Listing.objects.filter(category = category)
+    allListings = Listing.objects.filter(category = category, active = 1)
     
     return render(request,"auctions/byCategory.html", {"allListings":allListings, "category": category})
 
@@ -95,7 +105,16 @@ def createlisting(request):
 
 
 def watchlist(request):
-    watchlist = Watchlist.objects.filter(user=request.user)
+    user = request.user
+    watchlist = Watchlist.objects.filter(user=user)
+
+    for item in watchlist:
+        if item.listing.active == 0:
+            listingToDelete = Listing.objects.get(id=item.listing.id)
+            Watchlist.objects.filter(user=user, listing = listingToDelete).delete()
+
+    watchlist = Watchlist.objects.filter(user=user)
+    
     return render(request,"auctions/watchlist.html", {"watchlist": watchlist})
 
 

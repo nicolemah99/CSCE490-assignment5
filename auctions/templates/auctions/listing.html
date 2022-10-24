@@ -3,7 +3,7 @@
 {% block main %}
 <a href="{% url 'index' %}">Back to all listings</a><br><br>
 <article>
-    <section>
+    <section style="display:inline-flexbox">
         {% if owner %}
             <h4>You own this item.</h4>
             <form method="POST" action="{% url 'closeBidding' item.id %}">
@@ -77,7 +77,7 @@
             {% csrf_token %}
             <input type='hidden' name='listing_id' value='{{ item.id }}' />
             {{ commentForm }}
-            <button>Comment</button>
+            <button style="display:block">Comment</button>
         </form>
         {% else %}
         <a href="{% url 'login' %}">Login</a><p style="display:inline"> to comment on this item</p>
