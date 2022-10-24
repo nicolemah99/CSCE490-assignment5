@@ -1,9 +1,5 @@
 import datetime
-import decimal
-from operator import itemgetter
-from unicodedata import category
 import django
-from django import forms
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
@@ -82,9 +78,11 @@ def register(request):
     else:
         return render(request, "auctions/register.html")
 
+
 def categories(request):
     allCategories = Category.objects.all()
     return render(request,"auctions/categories.html", {"allCategories": allCategories})
+
 
 def bycategory(request,categoryChosen):
     category = Category.objects.get(name=categoryChosen)
@@ -114,7 +112,7 @@ def watchlist(request):
             Watchlist.objects.filter(user=user, listing = listingToDelete).delete()
 
     watchlist = Watchlist.objects.filter(user=user)
-    
+
     return render(request,"auctions/watchlist.html", {"watchlist": watchlist})
 
 
@@ -129,6 +127,7 @@ def addtowatchlist(request,listingID):
             watchItem.save()
             messages.success(request, f"{item.name} successfully added to watchlist")
     return redirect("listing", listingID = listingID)
+
 
 def removefromwatchlist(request,listingID):
     if request.method == "POST":
@@ -163,7 +162,6 @@ def closeBidding(request, listingID):
 
 
 def comment(request, listingID):
-
     if request.method == "POST":
         form = NewComment(request.POST)
         if form.is_valid():
@@ -172,6 +170,7 @@ def comment(request, listingID):
             obj.listing = Listing.objects.get(id=listingID)
             obj.save()
         return redirect('listing', listingID = listingID)
+
 
 def bid(request, listingID):
     item = Listing.objects.get(id=listingID)

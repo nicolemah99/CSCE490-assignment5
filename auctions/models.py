@@ -1,3 +1,4 @@
+import datetime
 from email.policy import default
 from pyexpat import model
 from tabnanny import verbose
@@ -9,7 +10,17 @@ from django.db import models
 from django.conf import settings
 from datetime import date
 from django import forms
+from django.forms import DateInput
 from pkg_resources import require
+from django.core.exceptions import ValidationError
+
+def validate_bidEndDate(dateBidEnd):
+    if dateBidEnd < datetime.date.today():
+        raise forms.ValidationError("The date cannot be in the past!")
+    return dateBidEnd
+        
+def one_week():
+     return date.today() + datetime.timedelta(days=7)
 
 class User(AbstractUser):
     pass
@@ -33,15 +44,15 @@ class Listing(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, default=1 , on_delete=models.CASCADE)
     category = models.ForeignKey(Category, null= True, on_delete = models.CASCADE)
     description = models.TextField(max_length= 200,null= True)
-    datePosted = models.DateField(default=date.today, verbose_name = "Date Posted")
-    dateBidEnd = models.DateField(default=date.today, verbose_name = "End Date")
+    datePosted = models.DateField(default=date.today, verbose_name = "Date Posted",)
+    dateBidEnd = models.DateField(default=one_week(), verbose_name = "End Date")
     image = models.ImageField(upload_to= 'auctions/images', default='auctions/images/noimage.jpeg',blank = True, verbose_name = "Images")
     active = models.BooleanField(default=1)
     winner = models.ForeignKey(User, null=True , on_delete=models.CASCADE, related_name = "winner", blank = True, verbose_name = "Sold to")
     
     def __str__(self):
         return f"{self.name}"
-
+    
 
 class Watchlist(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, default=1, on_delete=models.CASCADE)
