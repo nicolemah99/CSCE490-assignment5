@@ -9,31 +9,35 @@
         <link rel="stylesheet" href="https://cdn.simplecss.org/simple.css">
         <link rel="stylesheet" href="{% static 'auctions/uaa490styles.css' %}" >
     </head>
-    <style>
-        img{width: 300px;
-            display: block;
-            margin:auto}
 
+    <style>
+        img {
+             width: 300px;
+            display: block;
+             margin:auto
+            }
     </style>
+
     <body>
-        <header>
-            <h1>Auctions "R" Us</h1>
-            <nav>
-                <span>
-                    <a href="{% url 'index' %}">Active Listings</a>
-                    <a href="{% url 'categories' %}">Categories</a>
+        <header style="background-color:#738678;">
+            <br>
+            <h1 style="color:white;">Auctions "R" Us</h1>
+            <nav style="color:white;">
+                <span style="color:white;">
+                    <a style="color:white;" href="{% url 'index' %}">Active Listings</a>
+                    <a style="color:white;" href="{% url 'categories' %}">Categories</a>
                     {% if user.is_authenticated %}
-                        <a href="{% url 'watchlist' %}">Watchlist</a>
-                        <a href="{% url 'createlisting' %}">Create Listing</a>
+                        <a style="color:white;" href="{% url 'watchlist' %}">Watchlist</a>
+                        <a style="color:white;" href="{% url 'createlisting' %}">Create Listing</a>
                     {% endif %}
                 </span>
                 <span>
                     {% if user.is_authenticated %}
                         Welcome <strong>{{ user.username }}!</strong>
-                        <a href="{% url 'logout' %}">Log Out</a>
+                        <a style="color:white;" href="{% url 'logout' %}">Log Out</a>
                     {% else %}
-                        <a href="{% url 'login' %}">Log In</a>
-                        <a href="{% url 'register' %}">Register</a>
+                        <a style="color:white;" href="{% url 'login' %}">Log In</a>
+                        <a style="color:white;" href="{% url 'register' %}">Register</a>
                     {% endif %}
                 </span>
             </nav>

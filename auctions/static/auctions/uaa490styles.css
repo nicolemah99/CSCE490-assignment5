@@ -9,7 +9,7 @@ body > header {
 }
 
 body {
-  grid-template-columns: 10% 80% 10%;
+  grid-template-columns: 15% 70% 15%;
 }
 
 .form-control {
