@@ -140,6 +140,7 @@ def removefromwatchlist(request,listingID):
 
 
 def listing(request,listingID):
+    
     item = Listing.objects.get(id=listingID)
     allComments = Comment.objects.filter(listing = listingID)
     owner = False
@@ -150,7 +151,14 @@ def listing(request,listingID):
     else:
         inWatchlist = False
 
-    return render(request, "auctions/listing.html",{"item":item, "commentForm": NewComment, 'bidForm': NewBid, 'allComments': allComments, "inWatchlist": inWatchlist, "owner": owner})
+    winningBid = Bid.objects.get(listing=item, bidPrice= item.currentBid)
+
+    if winningBid.user == request.user:
+        winning = True
+    else:
+        winning = False
+
+    return render(request, "auctions/listing.html",{"item":item, "commentForm": NewComment, 'bidForm': NewBid, 'allComments': allComments, "inWatchlist": inWatchlist, "owner": owner, "winning":winning})
 
 def closeBidding(request, listingID):
     item = Listing.objects.get(id = listingID)

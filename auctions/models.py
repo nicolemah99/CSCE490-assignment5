@@ -77,7 +77,7 @@ class Bid(models.Model):
     date = models.DateTimeField(auto_now= True)
 
     def __str__(self):
-        return f'Bid on {self.listing} for {self.bidPrice}'
+        return f'{self.user} on {self.listing} for {self.bidPrice}'
 
 #Need models for:
 #Categories
