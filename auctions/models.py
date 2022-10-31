@@ -1,19 +1,14 @@
+#lots of unused imports; also, VS has a command "organize imports" that is nice to know about
 import datetime
-from email.policy import default
-from pyexpat import model
-from tabnanny import verbose
-from tkinter import Widget
-from unicodedata import category
-from unittest.util import _MAX_LENGTH
+from datetime import date
+
+from django import forms
+from django.conf import settings
 from django.contrib.auth.models import AbstractUser
 from django.db import models
-from django.conf import settings
-from datetime import date
-from django import forms
-from django.forms import DateInput
-from pkg_resources import require
-from django.core.exceptions import ValidationError
 
+
+# is this ever called? i think it belongs in the forms.py file somehow
 def validate_bidEndDate(dateBidEnd):
     if dateBidEnd < datetime.date.today():
         raise forms.ValidationError("The date cannot be in the past!")
@@ -22,6 +17,7 @@ def validate_bidEndDate(dateBidEnd):
 def one_week():
      return date.today() + datetime.timedelta(days=7)
 
+# the purpose of this class was to use it rather than settings.AUTH_USER_MODEL as fields in other classes.
 class User(AbstractUser):
     pass
 
