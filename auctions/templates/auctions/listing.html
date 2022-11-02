@@ -1,5 +1,31 @@
 {% extends "auctions/layout.html" %}
 
+<script>
+    document.addEventListener('DOMContentLoaded', ()=> {
+        document.querySelector('.material-symbols-outlined').onclick = ()=> {
+            fetch('watchlistToggle/${item.id}}')
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                update_icon(data);
+            })
+ 
+        }
+    })
+
+    function update_icon(data) {
+        newsstate = data["current_value"];
+        if (newsstate == 'on'){
+            document.querySelector('.material-symbols-outlined').style['font-variation-settings'] = 'FILL:0';
+        }
+        else{
+            document.querySelector('.material-symbols-outlined').style = filename;
+        }
+        
+    }
+
+</script>
+
 {% block main %}
 <a href="{% url 'index' %}">Back to all listings</a><br><br>
 <article>
@@ -21,14 +47,17 @@
         </ul>
         {% endif %}
 
+        <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 0">favorite</span>
+
         {% if user.is_authenticated %}
         {% if inWatchlist %}
-        <form method="POST" action="{% url 'removefromwatchlist' item.id %}">
+        <form class="watchlist" id = "remove" method="POST" action="{% url 'removefromwatchlist' item.id %}">
             {% csrf_token %}
             <button>Remove from watchlist</button>
         </form>
         {% else %}
-        <form method="POST" action="{% url 'addtowatchlist' item.id %}">
+
+        <form class="watchlist" id = "add" method="POST" action="{% url 'addtowatchlist' item.id %}">
             {% csrf_token %}
             <button>Add to watchlist</button>
         </form>
@@ -85,10 +114,8 @@
         {% else %}
         <a href="{% url 'login' %}">Login</a><p style="display:inline"> to comment on this item</p>
         {% endif %}
-
+        <script src="http://localhost/static/auctions/listing.js"></script>
     </section>
-
-
 
 </article>
 

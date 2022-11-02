@@ -2,7 +2,7 @@ import datetime
 import django
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse
 from django import forms
@@ -11,7 +11,19 @@ from django.http import Http404
 from auctions.models import *
 from auctions.forms import *
 
-
+def api_toggle_watchlist(request,listingID):
+    if request.method == "POST":
+        item = Listing.objects.get(id=listingID)
+        user = request.user
+        if Watchlist.objects.filter(user=user, listing = item).exists():
+            Watchlist.objects.filter(user=user, listing = item).delete()
+            newstate = "off"
+        else:
+            watchItem = Watchlist(user=user, listing = item)
+            watchItem.save()
+            newstate = "on"
+    return JsonResponse({'current_value': newstate})
+    
 def index(request):
     #Check for active listings here, compare todays date with dateBidEnd 
     listings = Listing.objects.all()

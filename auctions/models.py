@@ -14,11 +14,6 @@ from django.forms import DateInput
 from pkg_resources import require
 from django.core.exceptions import ValidationError
 
-def validate_bidEndDate(dateBidEnd):
-    if dateBidEnd < datetime.date.today():
-        raise forms.ValidationError("The date cannot be in the past!")
-    return dateBidEnd
-        
 def one_week():
      return date.today() + datetime.timedelta(days=7)
 
@@ -34,7 +29,6 @@ class Category(models.Model):
 
     def __str__(self):
         return f"{self.name}"
-
 
 
 class Listing(models.Model):
@@ -61,6 +55,7 @@ class Watchlist(models.Model):
     def __str__(self):
         return f'{self.user} added {self.listing} to watchlist.'
 
+
 class Comment(models.Model):
     comment = models.TextField(max_length = 200)
     date = models.DateTimeField(auto_now=True)
@@ -70,6 +65,7 @@ class Comment(models.Model):
     def __str__(self):
         return f'{self.user} commented on {self.listing}'
 
+
 class Bid(models.Model):
     bidPrice = models.DecimalField(max_digits=19, decimal_places=2, verbose_name = "Bid Amount")
     user = models.ForeignKey(settings.AUTH_USER_MODEL, default= 1, on_delete=models.CASCADE)
@@ -78,9 +74,3 @@ class Bid(models.Model):
 
     def __str__(self):
         return f'{self.user} on {self.listing} for {self.bidPrice}'
-
-#Need models for:
-#Categories
-#Watchlist
-#Bid
-#Comments
