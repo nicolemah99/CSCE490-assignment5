@@ -3,19 +3,20 @@
 <script>
     document.addEventListener('DOMContentLoaded', ()=> {
         document.querySelector('#watchlist').onclick = ()=> {
-            fetch('api/watchlistToggle/${item.id}}')
-            .then((response) => response.json())
-            .then((data) => {
+            fetch(`'api/watchlistToggle/${item.id}}'`)
+            .then(response => response.json())
+            .then(data => {
                 console.log(data);
                 update_icon(data);
-            })
- 
+            }
+            )
         }
     })
 
+
     function update_icon(data) {
-        newsstate = data["current_value"];
-        if (newsstate == 'on'){
+        newstate = data["current_value"];
+        if (newstate == 'on'){
             document.querySelector('#watchlist').style['font-variation-settings'].FILL = 0;
         }
         else{
