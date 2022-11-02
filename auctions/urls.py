@@ -19,5 +19,5 @@ urlpatterns = [
     path("addtowatchlist/<str:listingID>", views.addtowatchlist, name="addtowatchlist"),
     path("removefromwatchlist/<str:listingID>", views.removefromwatchlist, name="removefromwatchlist"),
     path("closeBidding/<str:listingID>", views.closeBidding, name="closeBidding"),
-    path("watchlistToggle/<str:listingID>", views.api_toggle_watchlist, name="toggleWatchlist"),
+    path("api/watchlistToggle/<str:listingID>", views.api_toggle_watchlist, name="toggleWatchlist"),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

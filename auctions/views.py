@@ -11,18 +11,6 @@ from django.http import Http404
 from auctions.models import *
 from auctions.forms import *
 
-def api_toggle_watchlist(request,listingID):
-    if request.method == "POST":
-        item = Listing.objects.get(id=listingID)
-        user = request.user
-        if Watchlist.objects.filter(user=user, listing = item).exists():
-            Watchlist.objects.filter(user=user, listing = item).delete()
-            newstate = "off"
-        else:
-            watchItem = Watchlist(user=user, listing = item)
-            watchItem.save()
-            newstate = "on"
-    return JsonResponse({'current_value': newstate})
     
 def index(request):
     #Check for active listings here, compare todays date with dateBidEnd 
@@ -127,6 +115,19 @@ def watchlist(request):
 
     return render(request,"auctions/watchlist.html", {"watchlist": watchlist})
 
+def api_toggle_watchlist(request,listingID):
+    if request.method == "POST":
+        item = Listing.objects.get(id=listingID)
+        user = request.user
+
+        if Watchlist.objects.filter(user=user, listing = item).exists():
+            Watchlist.objects.filter(user=user, listing = item).delete()
+            newstate = "off"
+        else:
+            watchItem = Watchlist(user=user, listing = item)
+            watchItem.save()
+            newstate = "on"
+    return JsonResponse({'current_value': newstate})
 
 def addtowatchlist(request,listingID):
     if request.method == "POST":

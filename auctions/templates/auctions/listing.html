@@ -2,10 +2,10 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', ()=> {
-        document.querySelector('.material-symbols-outlined').onclick = ()=> {
-            fetch('watchlistToggle/${item.id}}')
-            .then(response => response.json())
-            .then(data => {
+        document.querySelector('#watchlist').onclick = ()=> {
+            fetch('api/watchlistToggle/${item.id}}')
+            .then((response) => response.json())
+            .then((data) => {
                 console.log(data);
                 update_icon(data);
             })
@@ -16,10 +16,10 @@
     function update_icon(data) {
         newsstate = data["current_value"];
         if (newsstate == 'on'){
-            document.querySelector('.material-symbols-outlined').style['font-variation-settings'] = 'FILL:0';
+            document.querySelector('#watchlist').style['font-variation-settings'].FILL = 0;
         }
         else{
-            document.querySelector('.material-symbols-outlined').style = filename;
+            document.querySelector('#watchlist').style['font-variation-settings'].FILL = 1;
         }
         
     }
@@ -47,17 +47,18 @@
         </ul>
         {% endif %}
 
-        <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 0">favorite</span>
+        <span class="material-symbols-outlined" id="watchlist" style="font-variation-settings:'FILL' 0">favorite</span>
+       
 
         {% if user.is_authenticated %}
         {% if inWatchlist %}
-        <form class="watchlist" id = "remove" method="POST" action="{% url 'removefromwatchlist' item.id %}">
+        <form method="POST" action="{% url 'removefromwatchlist' item.id %}">
             {% csrf_token %}
             <button>Remove from watchlist</button>
         </form>
         {% else %}
 
-        <form class="watchlist" id = "add" method="POST" action="{% url 'addtowatchlist' item.id %}">
+        <form method="POST" action="{% url 'addtowatchlist' item.id %}">
             {% csrf_token %}
             <button>Add to watchlist</button>
         </form>
