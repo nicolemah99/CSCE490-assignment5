@@ -138,6 +138,19 @@ def addtowatchlist(request,listingID):
     # If so, you are probably correct to redirect to the listing page
     return redirect("listing", listingID = listingID)
 
+def api_toggle_watchlist(request,listingID):
+    if request.method == "POST":
+        item = Listing.objects.get(id=listingID)
+        user = request.user
+        if Watchlist.objects.filter(user=user, listing = item).exists():
+            Watchlist.objects.filter(user=user, listing = item).delete()
+            newstate = "off"
+        else:
+            watchItem = Watchlist(user=user, listing = item)
+            watchItem.save()
+            newstate = "on"
+    return JsonResponse({'current_value': newstate})
+
 
 def removefromwatchlist(request,listingID):
     if request.method == "POST":

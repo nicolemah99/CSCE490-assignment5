@@ -1,0 +1,25 @@
+
+<script>
+    document.addEventListener('DOMContentLoaded', ()=> {
+        document.querySelector('#xxx').onclick = ()=> {
+            const lid = get the data from the image "this"
+            fetch('/api_toggle_watch/${lid}}')
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                update_icon(data);
+            })
+ 
+        }
+    }
+
+    function update_icon(data) {
+        newsstate = data["current_value"];
+        filename = f'{newstate}.jpg';
+        document.querySelect('#xxx').src = filename;
+    }
+
+</script>
+ <img id="xxx" src="xxxx" data-mumble="{listing.id}>
+
+ dataset? 
