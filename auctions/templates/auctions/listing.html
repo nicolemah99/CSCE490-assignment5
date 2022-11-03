@@ -5,6 +5,15 @@
     document.addEventListener("DOMContentLoaded", ()=> {
         const image = document.getElementById('watchlist');
         const id = image.dataset.id;
+        const watchlistStatus = image.dataset.watchlist;
+        
+        if (image.dataset.watchlist == 'True'){
+            image.src = '/auctions/static/auctions/on.png';
+        }
+        else{
+            image.src = '/auctions/static/auctions/off.png';
+        }
+        
         image.onclick = ()=> {
             fetch(`/api/watchlistToggle/${id}`).then(response => response.json()).then(data => {
                 console.log(data);
@@ -42,10 +51,13 @@
         </ul>
         {% endif %}
 
-        <img src="/auctions/static/auctions/off.png" id="watchlist" alt="Unfilled heart Icon" data-id="{{item.id}}" style="width:60px">
+    
 
         {% if user.is_authenticated %}
+        <img src="/auctions/static/auctions/off.png" id="watchlist" alt="Unfilled heart Icon" data-id="{{item.id}}" data-watchlist="{{inWatchlist}}" style="width:60px;display:inline;"><br>
+
         {% if inWatchlist %}
+
         <form method="POST" action="{% url 'removefromwatchlist' item.id %}">
             {% csrf_token %}
             <button>Remove from watchlist</button>
