@@ -118,14 +118,14 @@ def watchlist(request):
 def api_toggle_watchlist(request,listingID):
     item = Listing.objects.get(id=listingID)
     user = request.user
-
-    if Watchlist.objects.filter(user=user, listing = item).exists():
-        Watchlist.objects.filter(user=user, listing = item).delete()
-        newstate = "off"
-    else:
-        watchItem = Watchlist(user=user, listing = item)
-        watchItem.save()
-        newstate = "on"
+    if request.method == "GET":
+        if Watchlist.objects.filter(user=user, listing = item).exists():
+            Watchlist.objects.filter(user=user, listing = item).delete()
+            newstate = "off"
+        else:
+            watchItem = Watchlist(user=user, listing = item)
+            watchItem.save()
+            newstate = "on"
     return JsonResponse({'current_value': newstate})
 
 def addtowatchlist(request,listingID):

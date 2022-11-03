@@ -8,6 +8,7 @@
         <title>{% block title %}Auctions{% endblock %}</title>
         <link rel="stylesheet" href="https://cdn.simplecss.org/simple.css">
         <link rel="stylesheet" href="{% static 'auctions/uaa490styles.css' %}" >
+        <link rel="stylesheet" href="/auctions/static/auctions/node_modules/basiclightbox/dist/basicLightbox.min.css">
     </head>
 
     <style>
@@ -46,5 +47,6 @@
             {% block main %}
             {% endblock %}
         </main>
+        <script src="/auctions/static/auctions/node_modules/basiclightbox/dist/basicLightbox.min.js"></script>
     </body>
 </html>

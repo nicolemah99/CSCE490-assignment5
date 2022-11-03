@@ -1,19 +1,22 @@
 {% extends "auctions/layout.html" %}
 
 {% block main %}
+
 <script>
     document.addEventListener("DOMContentLoaded", ()=> {
+        const imageInstance = basicLightbox.create(document.querySelector('#image'))
+        document.querySelector('img.image').onclick = imageInstance.show
         const image = document.getElementById('watchlist');
         const id = image.dataset.id;
         const watchlistStatus = image.dataset.watchlist;
-        
+
         if (image.dataset.watchlist == 'True'){
             image.src = '/auctions/static/auctions/on.png';
         }
         else{
             image.src = '/auctions/static/auctions/off.png';
         }
-        
+
         image.onclick = ()=> {
             fetch(`/api/watchlistToggle/${id}`).then(response => response.json()).then(data => {
                 console.log(data);
@@ -30,7 +33,25 @@
     }
 
 </script>
+<style>
+    #lightbox{
+        position: fixed;
+        z-index: 1000;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, .8);
+        display: none;
+    }
 
+    #lightbox.active {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+
+</style>
 <a href="{% url 'index' %}">Back to all listings</a><br><br>
 <article>
     <section style="display:inline-flexbox">
@@ -54,7 +75,7 @@
     
 
         {% if user.is_authenticated %}
-        <img src="/auctions/static/auctions/off.png" id="watchlist" alt="Unfilled heart Icon" data-id="{{item.id}}" data-watchlist="{{inWatchlist}}" style="width:60px;display:inline;"><br>
+        <img src="/auctions/static/auctions/off.png" id="watchlist" alt="Unfilled heart Icon" data-id="{{item.id}}" data-watchlist="{{inWatchlist}}" style="cursor:pointer;width:60px;display:inline;"><br>
 
         {% if inWatchlist %}
 
@@ -72,9 +93,11 @@
         {% endif %}
         {% endif %}
     </section>
-    <section>
-        <img src="{{ item.image.url }}" style="width:500px">
-    </section>
+        
+    <img class="image" src="{{ item.image.url }}" style="width:500px">
+    <div id="image" hidden>
+        <img width="1400" height="900" src="{{ item.image.url }}">
+    </div>
 
     <section>
         {% if winning %}
