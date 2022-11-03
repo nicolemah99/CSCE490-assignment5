@@ -116,17 +116,16 @@ def watchlist(request):
     return render(request,"auctions/watchlist.html", {"watchlist": watchlist})
 
 def api_toggle_watchlist(request,listingID):
-    if request.method == "POST":
-        item = Listing.objects.get(id=listingID)
-        user = request.user
+    item = Listing.objects.get(id=listingID)
+    user = request.user
 
-        if Watchlist.objects.filter(user=user, listing = item).exists():
-            Watchlist.objects.filter(user=user, listing = item).delete()
-            newstate = "off"
-        else:
-            watchItem = Watchlist(user=user, listing = item)
-            watchItem.save()
-            newstate = "on"
+    if Watchlist.objects.filter(user=user, listing = item).exists():
+        Watchlist.objects.filter(user=user, listing = item).delete()
+        newstate = "off"
+    else:
+        watchItem = Watchlist(user=user, listing = item)
+        watchItem.save()
+        newstate = "on"
     return JsonResponse({'current_value': newstate})
 
 def addtowatchlist(request,listingID):

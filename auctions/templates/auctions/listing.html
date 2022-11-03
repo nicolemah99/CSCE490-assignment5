@@ -1,3 +1,6 @@
+{% extends "auctions/layout.html" %}
+
+{% block main %}
 <script>
     document.addEventListener("DOMContentLoaded", ()=> {
         const image = document.getElementById('watchlist');
@@ -13,18 +16,12 @@
 
     function update_icon(data){
         var newstate = data["current_value"];
-        var filename = `/auctions/static/auctions/${newstate}`;
+        var filename = `/auctions/static/auctions/${newstate}.png`;
         document.getElementById('watchlist').src = filename;
     }
 
-
-
 </script>
 
-{% extends "auctions/layout.html" %}
-
-
-{% block main %}
 <a href="{% url 'index' %}">Back to all listings</a><br><br>
 <article>
     <section style="display:inline-flexbox">
@@ -45,7 +42,7 @@
         </ul>
         {% endif %}
 
-        <img src="/auctions/static/auctions/no.png" id="watchlist" alt="Unfilled heart Icon" data-id="{{item.id}}" style="width:60px">
+        <img src="/auctions/static/auctions/off.png" id="watchlist" alt="Unfilled heart Icon" data-id="{{item.id}}" style="width:60px">
 
         {% if user.is_authenticated %}
         {% if inWatchlist %}
