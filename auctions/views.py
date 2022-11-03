@@ -116,7 +116,7 @@ def watchlist(request):
     return render(request,"auctions/watchlist.html", {"watchlist": watchlist})
 
 def api_toggle_watchlist(request,listingID):
-    if request.method == "POST":
+    if request.method == "GET":
         item = Listing.objects.get(id=listingID)
         user = request.user
 

@@ -1,12 +1,16 @@
 {% extends "auctions/layout.html" %}
 
+{% block main %}
+
+
 <script>
     document.addEventListener('DOMContentLoaded', ()=> {
+
         document.querySelector('#watchlist').onclick = ()=> {
-            fetch(`'api/watchlistToggle/${item.id}}'`)
+            id = {{item.id}} //CAREFUL: Won't work if this code is in an external file!
+            fetch(`/api/watchlistToggle/${id}`)
             .then(response => response.json())
             .then(data => {
-                console.log(data);
                 update_icon(data);
             }
             )
@@ -17,17 +21,20 @@
     function update_icon(data) {
         newstate = data["current_value"];
         if (newstate == 'on'){
-            document.querySelector('#watchlist').style['font-variation-settings'].FILL = 0;
+            document.querySelector('#watchlist').style['font-variation-settings'] = '"FILL" 0';
         }
         else{
-            document.querySelector('#watchlist').style['font-variation-settings'].FILL = 1;
+            document.querySelector('#watchlist').style['font-variation-settings'] = '"FILL" 1';
+
         }
         
     }
 
 </script>
 
-{% block main %}
+
+<span class="material-symbols-outlined" id="watchlist" style="font-variation-settings:'FILL' 0">favorite</span>
+       
 <a href="{% url 'index' %}">Back to all listings</a><br><br>
 <article>
     <section style="display:inline-flexbox">
@@ -48,8 +55,7 @@
         </ul>
         {% endif %}
 
-        <span class="material-symbols-outlined" id="watchlist" style="font-variation-settings:'FILL' 0">favorite</span>
-       
+        
 
         {% if user.is_authenticated %}
         {% if inWatchlist %}
@@ -116,7 +122,9 @@
         {% else %}
         <a href="{% url 'login' %}">Login</a><p style="display:inline"> to comment on this item</p>
         {% endif %}
-        <script src="http://localhost/static/auctions/listing.js"></script>
+        <!--
+                    <script src="http://localhost/static/auctions/listing.js"></script>
+        -->
     </section>
 
 </article>
