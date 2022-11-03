@@ -2,15 +2,16 @@
 
 <script>
     document.addEventListener("DOMContentLoaded", ()=> {
-        document.querySelector("#watchlist1").onclick = () => {
-            const id = document.querySelect('#watchlist1').getAttribute('data-id')
+        document.querySelector("#watchlist1").addEventListener("click", () => {
+            let id = document.querySelect('#watchlist1').getAttribute('data-id')
             fetch(`api/watchlistToggle/${id}`).then(response => {return response.json()}).then(data => {
                 console.log(data);
                 updateImage(data);
             })
         }
-    })
-
+        )
+    }
+    )
     function updateImage(data){
         newstate = data["current_value"];
         filename = `/auctions/static/auctions/${newstate}.png`;
@@ -108,7 +109,6 @@
         {% else %}
         <a href="{% url 'login' %}">Login</a><p style="display:inline"> to comment on this item</p>
         {% endif %}
-        <script src="http://localhost/static/auctions/listing.js"></script>
     </section>
 
 </article>
