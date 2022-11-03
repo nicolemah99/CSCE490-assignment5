@@ -1,24 +1,28 @@
-{% extends "auctions/layout.html" %}
-
 <script>
     document.addEventListener("DOMContentLoaded", ()=> {
-        document.querySelector("#watchlist1").addEventListener("click", () => {
-            var id = document.querySelect('#watchlist1').getAttribute('data-id')
-            fetch(`api/watchlistToggle/${id}`).then(response => response.json()).then(data => {
+        const image = document.getElementById('watchlist');
+        const id = image.dataset.id;
+        image.onclick = ()=> {
+            fetch(`/api/watchlistToggle/${id}`).then(response => response.json()).then(data => {
                 console.log(data);
-                updateImage(data);
+                update_icon(data);
+
             })
         }
-        )
-    }
-    )
-    function updateImage(data){
-        newstate = data["current_value"];
-        filename = `/auctions/static/auctions/${newstate}.png`;
-        document.querySelect('#watchlist1').src = filename;
+    })
+
+    function update_icon(data){
+        var newstate = data["current_value"];
+        var filename = `/auctions/static/auctions/${newstate}`;
+        document.getElementById('watchlist').src = filename;
     }
 
+
+
 </script>
+
+{% extends "auctions/layout.html" %}
+
 
 {% block main %}
 <a href="{% url 'index' %}">Back to all listings</a><br><br>
@@ -41,7 +45,7 @@
         </ul>
         {% endif %}
 
-        <img src="/auctions/static/auctions/no.png" id="watchlist1" alt="Unfilled heart Icon" data-id="{{item.id}}" style="width:60px">
+        <img src="/auctions/static/auctions/no.png" id="watchlist" alt="Unfilled heart Icon" data-id="{{item.id}}" style="width:60px">
 
         {% if user.is_authenticated %}
         {% if inWatchlist %}
