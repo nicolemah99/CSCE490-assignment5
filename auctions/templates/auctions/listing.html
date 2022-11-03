@@ -82,18 +82,10 @@
 </article>
 <script>
     document.addEventListener("DOMContentLoaded", ()=> {
-        const imageInstance = basicLightbox.create(document.querySelector('#image'))
-        document.querySelector('img.image').onclick = imageInstance.show
+        lightbox()
         const image = document.getElementById('watchlist');
         const id = image.dataset.id;
-        const watchlistStatus = image.dataset.watchlist;
-
-        if (image.dataset.watchlist == 'True'){
-            image.src = '/auctions/static/auctions/on.png';
-        }
-        else{
-            image.src = '/auctions/static/auctions/off.png';
-        }
+        image.src = watchlist_check(image.dataset.watchlist);
 
         image.onclick = ()=> {
             fetch(`/api/watchlistToggle/${id}`).then(response => response.json()).then(data => {
@@ -103,7 +95,20 @@
             })
         }
     })
+    function lightbox(){
+        const imageInstance = basicLightbox.create(document.querySelector('#image'))
+        document.querySelector('img.image').onclick = imageInstance.show
+    }
+    function watchlist_check(inWatchlist){
 
+        if (inWatchlist == 'True'){
+            filename = '/auctions/static/auctions/on.png';
+        }
+        else{
+            filename = '/auctions/static/auctions/off.png';
+        }
+        return filename
+    }
     function update_icon(data){
         var newstate = data["current_value"];
         var filename = `/auctions/static/auctions/${newstate}.png`;
