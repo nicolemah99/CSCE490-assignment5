@@ -3,8 +3,8 @@
 <script>
     document.addEventListener("DOMContentLoaded", ()=> {
         document.querySelector("#watchlist1").addEventListener("click", () => {
-            let id = document.querySelect('#watchlist1').getAttribute('data-id')
-            fetch(`api/watchlistToggle/${id}`).then(response => {return response.json()}).then(data => {
+            var id = document.querySelect('#watchlist1').getAttribute('data-id')
+            fetch(`api/watchlistToggle/${id}`).then(response => response.json()).then(data => {
                 console.log(data);
                 updateImage(data);
             })
@@ -41,7 +41,6 @@
         </ul>
         {% endif %}
 
-        <span class="material-symbols-outlined" id="watchlist" style="font-variation-settings:'FILL' 0">favorite</span>
         <img src="/auctions/static/auctions/no.png" id="watchlist1" alt="Unfilled heart Icon" data-id="{{item.id}}" style="width:60px">
 
         {% if user.is_authenticated %}
