@@ -1,4 +1,4 @@
-
+//test
 document.addEventListener("DOMContentLoaded", ()=> {
     lightbox()
     const image = document.getElementById('watchlist');
