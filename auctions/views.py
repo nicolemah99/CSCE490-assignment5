@@ -118,7 +118,7 @@ def watchlist(request):
 def api_toggle_watchlist(request,listingID):
     item = Listing.objects.get(id=listingID)
     user = request.user
-    #if request.method == "GET":
+    
     if Watchlist.objects.filter(user=user, listing = item).exists():
         Watchlist.objects.filter(user=user, listing = item).delete()
         newstate = "off"
