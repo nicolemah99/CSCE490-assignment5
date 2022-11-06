@@ -8,12 +8,12 @@ from django.urls import reverse
 from django import forms
 from django.contrib import messages
 from django.http import Http404
-from auctions.models import *
-from auctions.forms import *
+from .models import Listing, User, Category, Watchlist, Comment, Bid
+from .forms import NewListing, NewComment, NewBid
 
-    
+
 def index(request):
-    #Check for active listings here, compare todays date with dateBidEnd 
+    # Check for active listings here, compare todays date with dateBidEnd
     listings = Listing.objects.all()
     for l in listings:
         endDate = l.dateBidEnd
@@ -21,9 +21,9 @@ def index(request):
 
         if endDate < today:
             Listing.objects.filter(id=l.id).update(active=0)
-    
+
     activeListings = Listing.objects.filter(active=1)
-        
+
     return render(request, "auctions/index.html", {'activeListings': activeListings})
 
 
@@ -81,14 +81,14 @@ def register(request):
 
 def categories(request):
     allCategories = Category.objects.all()
-    return render(request,"auctions/categories.html", {"allCategories": allCategories})
+    return render(request, "auctions/categories.html", {"allCategories": allCategories})
 
 
-def bycategory(request,categoryChosen):
+def bycategory(request, categoryChosen):
     category = Category.objects.get(name=categoryChosen)
-    allListings = Listing.objects.filter(category = category, active = 1)
-    
-    return render(request,"auctions/byCategory.html", {"allListings":allListings, "category": category})
+    allListings = Listing.objects.filter(category=category, active=1)
+
+    return render(request, "auctions/byCategory.html", {"allListings": allListings, "category": category})
 
 
 def createlisting(request):
@@ -99,7 +99,7 @@ def createlisting(request):
             obj.user = request.user
             obj.save()
         return redirect("index")
-    return render(request,"auctions/createlisting.html", {"form": NewListing})
+    return render(request, "auctions/createlisting.html", {"form": NewListing})
 
 
 def watchlist(request):
@@ -109,76 +109,82 @@ def watchlist(request):
     for item in watchlist:
         if item.listing.active == 0:
             listingToDelete = Listing.objects.get(id=item.listing.id)
-            Watchlist.objects.filter(user=user, listing = listingToDelete).delete()
+            Watchlist.objects.filter(
+                user=user, listing=listingToDelete).delete()
 
     watchlist = Watchlist.objects.filter(user=user)
 
-    return render(request,"auctions/watchlist.html", {"watchlist": watchlist})
+    return render(request, "auctions/watchlist.html", {"watchlist": watchlist})
 
-def api_toggle_watchlist(request,listingID):
+
+def api_toggle_watchlist(request, listingID):
     item = Listing.objects.get(id=listingID)
     user = request.user
-    
-    if Watchlist.objects.filter(user=user, listing = item).exists():
-        Watchlist.objects.filter(user=user, listing = item).delete()
+
+    if Watchlist.objects.filter(user=user, listing=item).exists():
+        Watchlist.objects.filter(user=user, listing=item).delete()
         newstate = "off"
     else:
-        watchItem = Watchlist(user=user, listing = item)
+        watchItem = Watchlist(user=user, listing=item)
         watchItem.save()
         newstate = "on"
     return JsonResponse({'current_value': newstate})
 
-def addtowatchlist(request,listingID):
+
+def addtowatchlist(request, listingID):
     if request.method == "POST":
         item = Listing.objects.get(id=listingID)
         user = request.user
-        if Watchlist.objects.filter(user=user, listing = item).exists():
+        if Watchlist.objects.filter(user=user, listing=item).exists():
             messages.error(request, f"{item.name} already in watchlist")
         else:
-            watchItem = Watchlist(user=user, listing = item)
+            watchItem = Watchlist(user=user, listing=item)
             watchItem.save()
-            messages.success(request, f"{item.name} successfully added to watchlist")
-    return redirect("listing", listingID = listingID)
+            messages.success(
+                request, f"{item.name} successfully added to watchlist")
+    return redirect("listing", listingID=listingID)
 
 
-def removefromwatchlist(request,listingID):
+def removefromwatchlist(request, listingID):
     if request.method == "POST":
         item = Listing.objects.get(id=listingID)
         user = request.user
-        Watchlist.objects.filter(user=user, listing = item).delete()
+        Watchlist.objects.filter(user=user, listing=item).delete()
         messages.success(request, f"{item.name} deleted")
         watchlist = Watchlist.objects.filter(user=request.user)
-    return render(request,"auctions/watchlist.html", {"watchlist": watchlist})
+    return render(request, "auctions/watchlist.html", {"watchlist": watchlist})
 
 
-def listing(request,listingID):
-    
+def listing(request, listingID):
+
     item = Listing.objects.get(id=listingID)
-    allComments = Comment.objects.filter(listing = listingID)
+    allComments = Comment.objects.filter(listing=listingID)
     owner = False
     if request.user.is_authenticated:
-        inWatchlist = Watchlist.objects.filter(user=request.user, listing= item).exists()
+        inWatchlist = Watchlist.objects.filter(
+            user=request.user, listing=item).exists()
         if item.user == request.user:
             owner = True
     else:
         inWatchlist = False
 
-    winningBid = Bid.objects.get(listing=item, bidPrice= item.currentBid)
+    winningBid = Bid.objects.get(listing=item, bidPrice=item.currentBid)
 
     if winningBid.user == request.user:
         winning = True
     else:
         winning = False
 
-    return render(request, "auctions/listing.html",{"item":item, "commentForm": NewComment, 'bidForm': NewBid, 'allComments': allComments, "inWatchlist": inWatchlist, "owner": owner, "winning":winning})
+    return render(request, "auctions/listing.html", {"item": item, "commentForm": NewComment, 'bidForm': NewBid, 'allComments': allComments, "inWatchlist": inWatchlist, "owner": owner, "winning": winning})
+
 
 def closeBidding(request, listingID):
-    item = Listing.objects.get(id = listingID)
+    item = Listing.objects.get(id=listingID)
     item.active = 0
     item.finalBid = item.currentBid
     item.save()
     messages.success(request, "You have successfully closed the bidding.")
-    return redirect('listing', listingID = listingID)
+    return redirect('listing', listingID=listingID)
 
 
 def comment(request, listingID):
@@ -189,7 +195,7 @@ def comment(request, listingID):
             obj.user = request.user
             obj.listing = Listing.objects.get(id=listingID)
             obj.save()
-        return redirect('listing', listingID = listingID)
+        return redirect('listing', listingID=listingID)
 
 
 def bid(request, listingID):
@@ -205,10 +211,11 @@ def bid(request, listingID):
             item.save()
             form = NewBid(request.POST)
             if form.is_valid():
-                messages.success(request, "Bid Successful, you are currently winning this bid.")
+                messages.success(
+                    request, "Bid Successful, you are currently winning this bid.")
                 obj = form.save(commit=False)
                 obj.user = request.user
                 obj.listing = Listing.objects.get(id=listingID)
                 obj.save()
 
-    return redirect('listing', listingID = listingID)
+    return redirect('listing', listingID=listingID)

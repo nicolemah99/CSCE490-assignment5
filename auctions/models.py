@@ -32,7 +32,7 @@ class Category(models.Model):
 
 
 class Listing(models.Model):
-    name = models.CharField(max_length= 64)
+    name = models.TextField(max_length= 64)
     currentBid = models.DecimalField(max_digits=19, decimal_places=2, verbose_name = "Starting Bid")
     finalBid = models.DecimalField(max_digits=19, decimal_places=2, null = True, blank = True,verbose_name = "Sold for")
     user = models.ForeignKey(settings.AUTH_USER_MODEL, default=1 , on_delete=models.CASCADE)

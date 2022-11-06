@@ -3,11 +3,11 @@
 {% block main %}
 <h2>Create Listing</h2>
 
-<article>
-    <form method="POST" action="{% url 'createlisting' %}" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ form }}
-        <button>Submit</button>
-    </form>
-</article>
+    <div class="container-fluid">
+        <form class="new-listing" novalidate method="POST" action="{% url 'createlisting' %}" enctype="multipart/form-data">
+            {% csrf_token %}
+                {{ form.as_p }}
+            <button class="btn btn-primary">Submit</button>
+        </form>
+    </div>
 {% endblock %}

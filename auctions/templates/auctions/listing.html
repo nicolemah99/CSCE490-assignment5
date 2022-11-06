@@ -6,11 +6,11 @@
 <article>
     <section style="display:flexbox">
         {% if owner %}
-            <h4>You own this item.</h4>
-            <form method="POST" action="{% url 'closeBidding' item.id %}">
-                {% csrf_token %}
-                <button>Close Bidding</button>
-            </form>
+        <h4>You own this item.</h4>
+        <form method="POST" action="{% url 'closeBidding' item.id %}">
+            {% csrf_token %}
+            <button>Close Bidding</button>
+        </form>
         {% endif %}
         <h2>{{ item.name }}</h2>
 
@@ -23,10 +23,11 @@
         {% endif %}
 
         {% if user.is_authenticated %}
-        <img src="/auctions/static/auctions/off.png" id="watchlist" alt="Unfilled heart Icon" data-id="{{item.id}}" data-watchlist="{{inWatchlist}}" style="cursor:pointer;width:60px;display:inline;"><br>
+        <img src="/auctions/static/auctions/off.png" id="watchlist" alt="Unfilled heart Icon" data-id="{{item.id}}"
+            data-watchlist="{{inWatchlist}}" style="cursor:pointer;width:60px;display:inline;"><br>
         {% endif %}
     </section>
-        
+
     <img class="image" src="{{ item.image.url }}" style="width:500px;cursor: pointer;">
     <div id="image" hidden>
         <img width="1400" height="900" src="{{ item.image.url }}">
@@ -34,7 +35,7 @@
 
     <section>
         {% if winning %}
-            <h3>You are winning this bid.</h3>
+        <h3>You are winning this bid.</h3>
         {% endif %}
         <h3>${{ item.currentBid }}</h3>
         <h4>Bidding ends: {{ item.dateBidEnd }} </h4>
@@ -46,9 +47,10 @@
             <button>Bid</button>
         </form>
         {% else %}
-            <a href="{% url 'login' %}">Login</a><p style="display:inline"> to bid on this item</p>
+        <a href="{% url 'login' %}">Login</a>
+        <p style="display:inline"> to bid on this item</p>
         {% endif %}
-        
+
 
         <h4>Description</h4>
         <p>{{ item.description }}</p>
@@ -67,7 +69,7 @@
             {% endfor %}
         </article>
 
-            {% if user.is_authenticated %}
+        {% if user.is_authenticated %}
         <form method="POST" action="{% url 'comment' item.id %}" enctype="multipart/form-data">
             {% csrf_token %}
             <input type='hidden' name='listing_id' value='{{ item.id }}' />
@@ -75,7 +77,8 @@
             <button style="display:block">Comment</button>
         </form>
         {% else %}
-        <a href="{% url 'login' %}">Login</a><p style="display:inline"> to comment on this item</p>
+        <a href="{% url 'login' %}">Login</a>
+        <p style="display:inline"> to comment on this item</p>
         {% endif %}
     </section>
 
