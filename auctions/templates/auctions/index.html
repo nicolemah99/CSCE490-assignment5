@@ -16,11 +16,12 @@
                 <h4>Current Bid: ${{ l.currentBid }}</h4>
                 <p>Posted: {{ l.datePosted }}</p>
                 <p>Posted by: {{ l.user }}</p>
-
             </div>
-
-
         </a>
+        {% if user.is_authenticated %}
+        <img src="/auctions/static/auctions/off.png" id="watchlist" alt="Unfilled heart Icon" data-id="{{l.id}}"
+            data-watchlist="{{inWatchlist}}" style="cursor:pointer;width:60px;display:inline;"><br>
+        {% endif %}
     </section>
     {% endif %}
     {% endfor %}

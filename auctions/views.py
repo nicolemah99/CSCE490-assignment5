@@ -24,7 +24,10 @@ def index(request):
 
     activeListings = Listing.objects.filter(active=1)
 
-    return render(request, "auctions/index.html", {'activeListings': activeListings})
+    if request.user.is_authenticated:
+        watchlist_id = Watchlist.objects.filter(user=request.user)
+
+    return render(request, "auctions/index.html", {'activeListings': activeListings, 'watchlist_item':watchlist_id})
 
 
 def login_view(request):
@@ -156,7 +159,6 @@ def removefromwatchlist(request, listingID):
 
 
 def listing(request, listingID):
-
     item = Listing.objects.get(id=listingID)
     allComments = Comment.objects.filter(listing=listingID)
     owner = False

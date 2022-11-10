@@ -6,6 +6,12 @@
 <article>
     {% for l in watchlist%}
     <section>
+        {% if user.is_authenticated %}
+        <img src="/auctions/static/auctions/off.png" class="watchlist-icon" alt="Unfilled heart Icon" data-id="{{l.id}}"
+            data-watchlist="True" style="cursor:pointer;width:60px;display:inline;">
+            <br>
+            <br>
+        {% endif %}
         <a href="{% url 'listing' l.listing.id %}" style="text-decoration: none;">
             <img src="{{ l.listing.image.url }}" alt="{{ l.listing.name }}">
             <h3>{{ l.listing.name }}</h3>
