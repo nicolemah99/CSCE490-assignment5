@@ -15,7 +15,7 @@
             {% if user.is_authenticated %}
             <form method="POST" action="{% url 'removefromwatchlist' l.listing.id %}">
                 {% csrf_token %}
-                <button>Remove from watchlist</button>
+                <button class="btn btn-primary">Remove from watchlist</button>
             </form>
             {% endif %}
         </a>

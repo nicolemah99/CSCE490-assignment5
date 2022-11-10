@@ -44,7 +44,7 @@
         <form method="POST" action="{% url 'bid' item.id %}" enctype="multipart/form-data">
             {% csrf_token %}
             {{ bidForm }}
-            <button>Bid</button>
+            <button class="btn btn-primary">Bid</button>
         </form>
         {% else %}
         <a href="{% url 'login' %}">Login</a>
@@ -74,7 +74,7 @@
             {% csrf_token %}
             <input type='hidden' name='listing_id' value='{{ item.id }}' />
             {{ commentForm }}
-            <button style="display:block">Comment</button>
+            <button class="btn btn-primary" style="display:block">Comment</button>
         </form>
         {% else %}
         <a href="{% url 'login' %}">Login</a>
